@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673491911123",
+    "project_id": "mobile-base-121fe",
+    "storage_bucket": "mobile-base-121fe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673491911123:android:026a0a3e334e07244d2f26",
+        "android_client_info": {
+          "package_name": "com.example.mobilebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxKPIyZ9dWiSHHEGsp8tSbhSPQv0-ivHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
