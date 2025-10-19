@@ -311,37 +311,28 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen>
                               if (shouldContinue != true) return;
                             }
 
+                            // İzin kontrolü yap
+                            final PermissionState permission =
+                                await PhotoManager.requestPermissionExtend(
+                              requestOption: const PermissionRequestOption(
+                                iosAccessLevel: IosAccessLevel.readWrite,
+                              ),
+                            );
+
                             if (!mounted) return;
 
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (context) => PhotoPermissionScreen(
-                                  onPermissionGranted: () {
-                                    // İzin verildikten sonra asset'leri yükle ve ana ekrana git
-
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) =>
-                                              const BottomNavBar()),
-                                      (route) => false,
-                                    );
-                                  },
-                                  onSkip: () {
-                                    // Kullanıcı izin vermek istemezse de ana ekrana git
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) =>
-                                              const BottomNavBar()),
-                                      (route) => false,
-                                    );
-                                  },
+                            if (permission.isAuth || permission.hasAccess) {
+                              // İzin var, asset'leri yükle ve ana ekrana git
+                            } else {
+                              // İzin yok, izin ekranını göster
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => BottomNavBar(),
                                 ),
-                              ),
-                              (route) => false,
-                            );
+                                (route) => false,
+                              );
+                            }
                           },
                           child: const Icon(CupertinoIcons.xmark,
                               color: CupertinoColors.systemGrey3, size: 20),
@@ -741,30 +732,6 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen>
 
               if (restoredInfo.activeSubscriptions.isNotEmpty) {
                 // Başarılı restore - PhotoPermissionScreen'e git
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => PhotoPermissionScreen(
-                      onPermissionGranted: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const BottomNavBar()),
-                          (route) => false,
-                        );
-                      },
-                      onSkip: () {
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => const BottomNavBar()),
-                          (route) => false,
-                        );
-                      },
-                    ),
-                  ),
-                  (route) => false,
-                );
               } else {
                 // Restore edilecek abonelik bulunamadı
                 showCupertinoDialog(
